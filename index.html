@@ -3,152 +3,503 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Attend AI | Sri Dasmesh School</title>
-<script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/build/face-api.min.js"></script>
+<title>Smart Attend AI | Sri Dashmesh School</title>
+
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
 <style>
-:root{--bg:#171716;--panel:#242320;--line:#444139;--text:#f6f0e5;--muted:#bdb4a5;--terra:#c76e4d;--red:#8e302c;--green:#51c58a}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:8px;padding:11px 15px;font-weight:bold}.primary{background:var(--terra);color:white}.secondary{background:#373630;color:white;border:1px solid var(--line)}.danger{background:var(--red);color:white}.hidden{display:none!important}.muted{color:var(--muted)}
-.auth{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top,#493126,var(--bg) 65%)}.auth-card{width:min(100%,440px);padding:30px;background:var(--panel);border:1px solid #514136;border-radius:18px}.brand{text-align:center;margin-bottom:25px}.logo{display:grid;place-items:center;background:var(--red);width:56px;height:56px;border-radius:14px;margin:0 auto 12px;font-size:22px;font-weight:bold}.school{font-weight:bold;letter-spacing:1px}.appname{font-size:27px;font-weight:800}.tabs{display:flex;gap:6px;margin:20px 0;background:#171716;padding:4px;border-radius:9px}.tabs button{flex:1;background:transparent;color:var(--muted)}.tabs .active{background:var(--terra);color:white}label{display:block;margin:12px 0 5px;font-size:13px}input,select{width:100%;padding:11px;background:#171716;color:var(--text);border:1px solid #514d44;border-radius:8px}.full{width:100%;margin-top:18px}.message{font-size:13px;color:#f0c66a;margin-top:10px;overflow-wrap:anywhere}
-.sidebar{position:fixed;inset:0 auto 0 0;width:230px;padding:20px 14px;background:#201f1d;border-right:1px solid var(--line);display:flex;flex-direction:column}.sidebrand{padding:8px 6px 20px;border-bottom:1px solid var(--line);margin-bottom:14px}.sidebrand .logo{width:42px;height:42px;margin:0 0 10px}.sidebrand .appname{font-size:20px}.nav button{display:block;text-align:left;width:100%;background:transparent;color:#d2c8bb;margin:3px 0}.nav button.active,.nav button:hover{background:#443027;color:white}.bottom{margin-top:auto;border-top:1px solid var(--line);padding-top:12px;overflow-wrap:anywhere}.main{margin-left:230px;padding:26px;max-width:1500px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.topbar h1{margin:0}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px;min-width:0}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.stat{font-size:29px;font-weight:bold;margin-top:8px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select{width:auto;min-width:140px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.wide{grid-column:1/-1}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;min-width:540px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}th{font-size:12px;color:var(--muted)}.empty{text-align:center;padding:25px;color:var(--muted)}.pill{display:inline-block;padding:4px 8px;border-radius:99px;background:#38372f;font-size:12px}.green{background:#183e2e;color:#9cf0c2}.redpill{background:#4a2422;color:#ffaaa4}.camera{position:relative;background:#080808;min-height:220px;display:grid;place-items:center;overflow:hidden;border-radius:10px}.camera video{display:block;width:100%;max-height:65vh;object-fit:contain}.camera canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.camera-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.note{padding:12px;border-radius:8px;background:#3a2d1d;color:#f5d48a;margin-bottom:14px}.small{font-size:12px}.preview{width:70px;height:70px;object-fit:cover;border-radius:8px;margin-top:8px}.bar{height:8px;background:#444;border-radius:9px}.bar span{display:block;height:100%;background:var(--terra)}
-@media(max-width:950px){.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}}
-@media(max-width:700px){.sidebar{position:static;width:auto;display:block;padding:10px}.sidebrand{display:flex;align-items:center;gap:12px;padding:4px 6px 12px;margin-bottom:8px}.sidebrand .logo{margin:0;flex-shrink:0}.nav{display:flex;overflow-x:auto;gap:4px}.nav button{white-space:nowrap;width:auto}.bottom{display:none}.main{margin:0;padding:14px}.topbar{align-items:flex-start;flex-direction:column}.formgrid{grid-template-columns:1fr}.wide{grid-column:auto}.card{padding:14px}.toolbar input,.toolbar select{width:100%}}
+:root{
+  --terracotta:#ad5846;--deep:#793b32;--cream:#fbf5ec;
+  --ivory:#fffdf9;--peach:#f3dfd1;--copper:#d49a78;
+  --text:#48332e;--muted:#907a70;--green:#32805b;
+  --red:#b94141;--line:#eadbd0;--shadow:0 8px 25px #6d392012;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#fbf5ec,#f6e7db,#fffaf3);
+font-family:"Segoe UI",sans-serif;color:var(--text);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;transition:.2s}
+button:hover{filter:brightness(.96);transform:translateY(-1px)}
+input,select{width:100%;padding:11px 12px;border:1px solid var(--line);
+border-radius:10px;background:#fffdf9;color:var(--text);outline:none}
+input:focus,select:focus{border-color:var(--terracotta);box-shadow:0 0 0 3px #ad58461a}
+label{font-size:12px;font-weight:650;color:var(--muted);display:block;margin:12px 0 6px}
+h1,h2,h3,p{margin-top:0}
+h1,h2,h3{font-family:Georgia,serif}
+.small{font-size:12px;color:var(--muted)}
+.primary{background:linear-gradient(120deg,var(--terracotta),var(--deep));color:white;
+padding:11px 17px;border-radius:10px;font-weight:650}
+.secondary{background:var(--peach);color:var(--deep);padding:10px 14px;border-radius:9px}
+.danger{background:#a72f36;color:white;padding:10px 15px;border-radius:9px}
+.outline{background:white;border:1px solid var(--line);padding:10px 14px;border-radius:9px}
+.hidden{display:none!important}
+#auth{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;
+gap:50px;padding:6vw}
+.brand h1{font-size:clamp(32px,4vw,55px);color:var(--deep);margin:18px 0 5px}
+.brand h2{font-size:28px;color:var(--terracotta);margin:0}
+.brand p{color:var(--muted);line-height:1.8}
+.star{font-size:45px;color:var(--terracotta)}
+.auth-card,.panel{background:#fffdf9ed;border:1px solid white;border-radius:20px;
+padding:27px;box-shadow:var(--shadow)}
+.auth-card h2{font-size:28px;margin-bottom:8px}
+.auth-card .primary{width:100%;margin-top:18px}
+#app{display:flex;min-height:100vh;padding:15px;gap:16px}
+.sidebar{width:235px;flex-shrink:0;background:linear-gradient(170deg,#fffdf9,#f5e4d7);
+border:1px solid white;border-radius:19px;padding:22px 13px;box-shadow:0 8px 24px #5835281c;
+display:flex;flex-direction:column;align-self:stretch}
+.side-brand{text-align:center;padding:3px 5px 20px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.side-brand strong{font: bold 20px Georgia;color:var(--deep);display:block}
+.side-brand span{font:19px Georgia;color:var(--terracotta);display:block;margin-top:7px}
+.nav{display:flex;flex-direction:column;gap:6px}
+.nav button{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 13px;
+border-radius:10px;background:transparent;color:#70574c;font-size:14px}
+.nav button.active{background:linear-gradient(110deg,#b65e49,#8e4338);color:white;
+box-shadow:0 5px 12px #a6533c35}
+.nav .sub{padding-left:42px;font-size:13px}
+.logout{margin-top:auto;background:#a62f37;color:white;padding:12px;border-radius:10px}
+main{min-width:0;flex:1;padding:12px 8px;overflow:hidden}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:23px}
+.topbar h1{font-size:30px;margin-bottom:5px}
+.page{display:none}.page.active{display:block}
+.grid{display:grid;gap:16px}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:18px}
+.stat{padding:20px;background:#fffdf9;border:1px solid white;border-radius:17px;box-shadow:var(--shadow)}
+.stat small{color:var(--muted)}.stat h2{font-size:33px;margin:13px 0 0}
+.stat .symbol{float:right;font-size:22px;background:var(--peach);padding:9px;border-radius:10px}
+.two{grid-template-columns:1fr 1fr}
+.panel{padding:21px;min-width:0;margin-bottom:16px}
+.panel h3{font-size:20px;margin-bottom:18px}
+.filters{display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.filters>div{flex:1;min-width:115px}
+.filters button{height:41px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+table{width:100%;border-collapse:collapse;min-width:650px;background:#fffdf9}
+th,td{padding:12px 13px;text-align:left;font-size:12px;border-bottom:1px solid #f0e6de}
+th{background:#f8eee5;color:#76564a;font-weight:700;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:5px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.present{color:#216b47;background:#e0f2e6}.absent{color:#a83237;background:#fae4e3}
+.neutral{background:#eee7e0;color:#71584c}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}
+.toolbar h2{margin:0;font-size:24px}
+.bar-row{display:grid;grid-template-columns:75px 1fr 35px;align-items:center;gap:8px;
+margin:16px 0;font-size:12px}
+.bar-bg{height:12px;background:#eee7df;border-radius:20px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,#3b9467,#8ac9a0);border-radius:20px}
+.empty{text-align:center;color:var(--muted);padding:28px}
+.modal{position:fixed;inset:0;background:#39241f70;display:flex;align-items:center;
+justify-content:center;padding:15px;z-index:10;overflow:auto}
+.modal-card{background:var(--cream);border-radius:19px;padding:25px;width:min(550px,100%);
+max-height:92vh;overflow:auto;box-shadow:0 20px 80px #38211f45}
+.modal-card h2{font-size:25px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px}
+#cameraBox{position:relative;max-width:800px;margin:auto;background:#251d1b;
+border-radius:14px;overflow:hidden;line-height:0}
+#video{width:100%;height:auto;display:block;transform:none}
+#overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.camera-status{padding:12px;background:#f8eee5;border-radius:10px;margin:13px 0;font-size:13px}
+.face-photo{width:38px;height:38px;object-fit:cover;border-radius:9px}
+.footer-note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:15px}
+@media(max-width:850px){
+ #auth{grid-template-columns:1fr;gap:25px;padding:25px}
+ #app{padding:8px;gap:8px}.sidebar{width:185px;padding:15px 9px}
+ main{padding:10px 4px}.two{grid-template-columns:1fr}
+}
+@media(max-width:570px){
+ #app{display:block}.sidebar{width:100%;margin-bottom:12px;padding:12px}
+ .side-brand{padding-bottom:12px}.nav{display:grid;grid-template-columns:1fr 1fr}
+ .nav button{padding:10px 8px;font-size:12px}.nav .sub{padding-left:14px}
+ .logout{margin-top:12px;width:100%}.stats{grid-template-columns:1fr}
+ .topbar h1{font-size:25px}.panel{padding:14px}.form-grid{grid-template-columns:1fr}
+}
+@media print{
+ .sidebar,.topbar .no-print,.filters,.toolbar .no-print{display:none!important}
+ #app{padding:0;display:block}main{padding:0}.page{display:none!important}
+ .page.active{display:block!important}.panel{box-shadow:none;border:0;padding:0}
+ body{background:white}
+}
 </style>
 </head>
 <body>
-<section id="auth" class="auth">
- <div class="auth-card">
-  <div class="brand"><div class="logo">SD</div><div class="school">SRI DASMESH SCHOOL</div><div class="appname">Smart Attend AI</div><div class="muted">Intelligent attendance management</div></div>
-  <div class="tabs"><button id="loginTab" class="active" type="button">Sign In</button><button id="signupTab" type="button">Create Account</button></div>
-  <form id="loginForm">
-   <label>Email address</label><input id="loginEmail" type="email" autocomplete="username" required>
-   <label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" required>
-   <button class="primary full">Sign In</button><div id="loginMsg" class="message"></div>
-  </form>
-  <form id="signupForm" class="hidden">
-   <label>Full name</label><input id="signupName" required>
-   <label>Email address</label><input id="signupEmail" type="email" required>
-   <label>Role</label><select id="signupRole"><option>Teacher</option><option>Principal</option><option>Administrator</option></select>
-   <label>Create password (at least 6 characters)</label><input id="signupPassword" type="password" minlength="6" required>
-   <label>School access code</label><input id="schoolCode" type="password" required>
-   <button class="primary full">Create Account</button><div id="signupMsg" class="message"></div>
-  </form>
-  <p class="muted small">Accounts and records are stored in this browser on this device. Use the same browser to return to your workspace.</p>
- </div>
+
+<section id="auth">
+  <div class="brand">
+    <div class="star">✳</div>
+    <h1>Sri Dashmesh School</h1>
+    <h2>Smart Attend AI</h2>
+    <p>A smarter, simpler way to manage student attendance.<br>
+    Thoughtfully designed for your school community.</p>
+  </div>
+  <div class="auth-card">
+    <div id="loginForm">
+      <h2>Welcome back</h2><p class="small">Sign in to your school account.</p>
+      <form id="login">
+        <label>Email address</label><input name="email" type="email" required autocomplete="username">
+        <label>Password</label><input name="password" type="password" required autocomplete="current-password">
+        <button class="primary">Login</button>
+      </form>
+      <p class="small" style="text-align:center;margin:22px 0">────────── OR ──────────</p>
+      <button class="outline" style="width:100%" onclick="showSignup()">Create Account</button>
+    </div>
+    <div id="signupForm" class="hidden">
+      <h2>Create account</h2><p class="small">Join the Smart Attend AI system.</p>
+      <form id="signup">
+        <label>Full name</label><input name="name" required>
+        <label>Email address</label><input name="email" type="email" required>
+        <label>Who's there?</label>
+        <select name="role" required><option>Teacher</option><option>Principal</option><option>Administrator</option></select>
+        <label>Create password</label><input name="password" type="password" minlength="6" required>
+        <label>School password</label><input name="schoolCode" type="password" required>
+        <button class="primary">Create Account</button>
+      </form>
+      <p class="small" style="text-align:center;margin-top:17px">Already have an account?</p>
+      <button class="outline" style="width:100%" onclick="showLogin()">Back to Login</button>
+    </div>
+    <p class="footer-note">Demo version: account data is saved in this browser. For real deployment, use secure server-side authentication.</p>
+  </div>
 </section>
 
 <div id="app" class="hidden">
  <aside class="sidebar">
-  <div class="sidebrand"><div class="logo">SD</div><div class="school">SRI DASMESH SCHOOL</div><div class="appname">Smart Attend AI</div></div>
-  <nav class="nav" id="nav">
-   <button class="active" data-page="dashboard">▦ Dashboard</button>
+  <div class="side-brand"><strong>Sri Dashmesh School</strong><span>Smart Attend AI</span></div>
+  <nav class="nav">
+   <button data-page="dashboard" class="active">⌂ Dashboard</button>
+   <button data-page="attendance">◷ Attendance</button>
    <button data-page="students">♙ Students</button>
-   <button data-page="attendance">◎ Mark Attendance</button>
-   <button data-page="reports">▤ Reports</button>
-   <button data-page="alerts">⚑ Alerts</button>
+   <button onclick="toggleReports()">▤ Reports　⌄</button>
+   <button class="sub hidden" id="dailyNav" data-page="daily">Daily</button>
+   <button class="sub hidden" id="monthlyNav" data-page="monthly">Monthly</button>
+   <button data-page="alerts">♧ Alerts</button>
   </nav>
-  <div class="bottom"><div id="userName"></div><div class="muted small" id="userRole"></div><button id="logout" class="danger" style="width:100%;margin-top:12px">Log Out</button></div>
+  <button class="logout" onclick="logout()">⇥　Logout</button>
  </aside>
- <main class="main">
-  <header class="topbar"><div><div class="muted small" id="todayLabel"></div><h1 id="pageTitle">Dashboard</h1></div><button class="secondary" id="topLogout">Log Out</button></header>
+ <main>
+  <header class="topbar">
+   <div><h1 id="greeting">Hey, Teachers!</h1><div class="small">Welcome to your school dashboard.</div></div>
+   <div style="text-align:right"><strong id="today"></strong><div class="small">Today's date</div></div>
+  </header>
 
-  <section class="page" id="page-dashboard">
-   <div class="stats">
-    <div class="card"><div class="muted">Registered Students</div><div class="stat" id="totalStudents">0</div></div>
-    <div class="card"><div class="muted">Present Today</div><div class="stat" id="presentToday">0</div></div>
-    <div class="card"><div class="muted">Absent Today</div><div class="stat" id="absentToday">0</div></div>
-    <div class="card"><div class="muted">Attendance Rate</div><div class="stat" id="rateToday">—</div></div>
+  <section id="dashboard" class="page active">
+   <div class="grid stats">
+    <div class="stat"><span class="symbol">♙</span><small>Total Strength</small><h2 id="totalCount">0</h2></div>
+    <div class="stat"><span class="symbol">✓</span><small>Total Present</small><h2 id="presentCount">0</h2></div>
+    <div class="stat"><span class="symbol">◷</span><small>Total Absent</small><h2 id="absentCount">0</h2></div>
    </div>
-   <div class="grid2"><div class="card"><h3>Welcome back!</h3><p id="welcome" class="muted"></p><button class="primary" data-goto="attendance">Start Face Recognition</button> <button class="secondary" data-goto="students">Add Student</button></div><div class="card"><h3>Recent Attendance</h3><div id="recent" class="muted">No attendance records yet.</div></div></div>
-   <div class="card"><h3>Getting started</h3><ol class="muted"><li>Add a student with a clear, front-facing photo.</li><li>Select the class and section in Mark Attendance.</li><li>Start the camera and allow camera access.</li><li>Finish the session to mark students not seen as absent.</li></ol><p class="small muted">AI models require internet access. Test recognition before using real attendance records.</p></div>
-  </section>
-
-  <section class="page hidden" id="page-students">
-   <div class="card"><div class="topbar"><div><h3>Student Directory</h3><div class="muted small">No demo students are preloaded.</div></div><button class="primary" id="showStudentForm">＋ Add Student</button></div>
-    <form id="studentForm" class="formgrid hidden">
-     <div><label>Student full name *</label><input id="studentName" required></div>
-     <div><label>Admission number *</label><input id="admissionNo" required></div>
-     <div><label>Class *</label><select id="studentClass" required></select></div>
-     <div><label>Section *</label><select id="studentSection"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
-     <div><label>Stream (Classes 11–12)</label><select id="studentStream"><option value="">Not applicable</option><option>Science</option><option>Commerce</option><option>Humanities</option></select></div>
-     <div><label>Parent/guardian phone</label><input id="parentPhone" type="tel"></div>
-     <div class="wide"><label>Student face photo *</label><input id="studentPhoto" type="file" accept="image/*" required><img id="photoPreview" class="preview hidden" alt="Photo preview"></div>
-     <div class="wide"><div id="studentMsg" class="message"></div><button class="primary">Save Student</button> <button type="button" class="secondary" id="cancelStudent">Cancel</button></div>
-    </form>
+   <div class="grid two">
+    <div class="panel"><h3>Today's Attendance</h3>
+     <div id="dashBars"></div>
+     <button class="primary" onclick="navigate('attendance')">◷　Mark Attendance</button>
+    </div>
+    <div class="panel"><h3>Class-wise Attendance</h3><div id="classSummary"></div></div>
    </div>
-   <div class="card"><div class="toolbar"><input id="studentSearch" placeholder="Search name or admission number"><select id="studentFilter"><option value="">All classes</option></select><select id="sectionFilter"><option value="">All sections</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div><div class="tablewrap"><table><thead><tr><th>Name</th><th>Admission No.</th><th>Class / Section</th><th>Photo</th><th>Action</th></tr></thead><tbody id="studentsTable"></tbody></table></div></div>
+   <div class="panel"><div class="toolbar"><h3>Recent Attendance</h3><button class="secondary" onclick="navigate('daily')">View report</button></div><div id="recent"></div></div>
   </section>
 
-  <section class="page hidden" id="page-attendance">
-   <div class="note">Face recognition requires internet to load the AI library and models. Register student photos before starting the camera.</div>
-   <div class="card"><h3>Attendance Session</h3><div class="formgrid"><div><label>Class</label><select id="attClass"></select></div><div><label>Section</label><select id="attSection"><option>A</option><option>B</option><option>C</option><option>D</option></select></div><div><label>Date</label><input id="attDate" type="date"></div></div><div class="camera-controls"><button class="primary" id="startCamera">Start Camera & Recognition</button><button class="secondary" id="stopCamera" disabled>Stop Camera</button><button class="secondary" id="finishSession">Finish Session / Mark Absent</button></div><div id="attMsg" class="muted small" style="margin-top:12px">Select a class and section.</div></div>
-   <div class="grid2"><div class="card"><h3>Live Face Localization</h3><div class="camera" id="cameraStage"><div id="cameraPlaceholder" class="muted">Camera is stopped.</div><video id="video" autoplay muted playsinline class="hidden"></video><canvas id="overlay"></canvas></div><div id="modelStatus" class="muted small" style="margin-top:10px">AI models not loaded.</div></div><div class="card"><h3>Session Results</h3><div id="sessionSummary" class="muted"></div><div class="tablewrap"><table style="min-width:270px"><thead><tr><th>Student</th><th>Status</th></tr></thead><tbody id="sessionTable"></tbody></table></div></div></div>
+  <section id="attendance" class="page">
+   <div class="panel">
+    <div class="toolbar"><h2>Mark Attendance</h2><button class="primary" onclick="openCamera()">▣ Start Face Scan</button></div>
+    <div class="filters" id="attFilters"></div>
+    <div class="toolbar"><span class="small" id="attCaption">Choose a class and section.</span><button class="secondary" onclick="saveAttendance()">Save Attendance</button></div>
+    <div id="attendanceTable"></div>
+   </div>
   </section>
 
-  <section class="page hidden" id="page-reports">
-   <div class="card"><h3>Attendance Reports</h3><div class="toolbar"><select id="reportPeriod"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select><input type="date" id="reportDate"><button class="primary" id="generateReport">Generate Report</button><button class="secondary" id="exportCsv">Export CSV</button></div><div id="reportSummary" class="muted"></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Student</th><th>Admission No.</th><th>Class / Section</th><th>Status</th></tr></thead><tbody id="reportTable"></tbody></table></div></div>
+  <section id="students" class="page">
+   <div class="panel">
+    <div class="toolbar"><h2>Students</h2><button class="primary" onclick="openStudent()">＋ Add Student</button></div>
+    <div class="filters" id="studentFilters"></div><div id="studentTable"></div>
+   </div>
   </section>
 
-  <section class="page hidden" id="page-alerts">
-   <div class="card"><h3>Low Attendance Alerts</h3><p class="muted">Students below 75% based on recorded attendance.</p><div class="tablewrap"><table><thead><tr><th>Class / Section</th><th>Student</th><th>Admission No.</th><th>Attendance</th></tr></thead><tbody id="alertsTable"></tbody></table></div></div>
+  <section id="daily" class="page">
+   <div class="panel">
+    <div class="toolbar"><h2>Daily Report</h2><div class="no-print" style="display:flex;gap:8px"><button class="secondary" onclick="exportCSV('daily')">Export CSV</button><button class="outline" onclick="window.print()">Print</button></div></div>
+    <div class="filters" id="dailyFilters"></div><div id="dailyTable"></div>
+   </div>
+  </section>
+
+  <section id="monthly" class="page">
+   <div class="panel">
+    <div class="toolbar"><h2>Monthly Report</h2><div class="no-print" style="display:flex;gap:8px"><button class="secondary" onclick="exportCSV('monthly')">Export CSV</button><button class="outline" onclick="window.print()">Print</button></div></div>
+    <div class="filters" id="monthlyFilters"></div><div id="monthlyTable"></div>
+   </div>
+  </section>
+
+  <section id="alerts" class="page">
+   <div class="panel">
+    <div class="toolbar"><h2>Low Attendance Alerts</h2><span class="pill absent">Below 75%</span></div>
+    <p class="small">Students with less than 75% attendance during recorded school days.</p>
+    <div class="filters" id="alertFilters"></div><div id="alertTable"></div>
+   </div>
   </section>
  </main>
 </div>
 
+<div id="modal" class="modal hidden"><div class="modal-card" id="modalContent"></div></div>
+
 <script>
-(() => {
-'use strict';
-const SCHOOL_CODE='DASMESH09';
-const K={accounts:'sai_accounts_v4',session:'sai_session_v4',students:'sai_students_v4',records:'sai_records_v4'};
+const SCHOOL_CODE="DASMESH09";
+const CLASSES=["Nursery","LKG","UKG",...Array.from({length:12},(_,i)=>String(i+1))];
+const SECTIONS=["A","B","C","D"];
+const STREAMS=["Science","Commerce","Humanities"];
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
 const $=id=>document.getElementById(id);
-const read=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch{return d}};
-const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-const accounts=()=>read(K.accounts,[]),students=()=>read(K.students,[]),records=()=>read(K.records,[]);
-const classes=['Nursery','LKG','UKG',...Array.from({length:12},(_,i)=>String(i+1))];
-const rank=c=>classes.indexOf(c)<0?999:classes.indexOf(c);
-const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
-const escapeHTML=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const dateLabel=d=>d?new Date(d+'T12:00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'';
-let user=null,stream=null,timer=null,descriptors=[],recognized=new Set(),modelsReady=false,lastReport=[];
-function showAuth(which='login'){$('auth').classList.remove('hidden');$('app').classList.add('hidden');$('loginForm').classList.toggle('hidden',which!=='login');$('signupForm').classList.toggle('hidden',which!=='signup');$('loginTab').classList.toggle('active',which==='login');$('signupTab').classList.toggle('active',which==='signup')}
-function openApp(){$('auth').classList.add('hidden');$('app').classList.remove('hidden');$('userName').textContent=user.name;$('userRole').textContent=user.role;$('welcome').textContent='Hey, '+user.name+'! Your attendance workspace is ready.';$('todayLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});renderAll();go('dashboard')}
-function logout(){stopCamera();user=null;localStorage.removeItem(K.session);showAuth('login');$('loginMsg').textContent='You have been logged out.'}
-$('loginTab').onclick=()=>showAuth('login');$('signupTab').onclick=()=>showAuth('signup');
-$('signupForm').onsubmit=e=>{e.preventDefault();const name=$('signupName').value.trim(),email=$('signupEmail').value.trim().toLowerCase(),password=$('signupPassword').value;if($('schoolCode').value!==SCHOOL_CODE){$('signupMsg').textContent='Incorrect school access code.';return}const a=accounts();if(a.some(x=>x.email===email)){$('signupMsg').textContent='This email already has an account. Please sign in.';return}a.push({name,email,password,role:$('signupRole').value});save(K.accounts,a);$('signupForm').reset();$('loginEmail').value=email;showAuth('login');$('loginMsg').textContent='Account created. Please sign in.'};
-$('loginForm').onsubmit=e=>{e.preventDefault();const email=$('loginEmail').value.trim().toLowerCase(),password=$('loginPassword').value,a=accounts().find(x=>x.email===email&&x.password===password);if(!a){$('loginMsg').textContent='Email or password is incorrect. If you have never registered in this browser, create an account.';return}user={name:a.name,email:a.email,role:a.role};save(K.session,user);$('loginMsg').textContent='';openApp()};
-$('logout').onclick=logout;$('topLogout').onclick=logout;
-function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$('page-'+page).classList.remove('hidden');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('pageTitle').textContent=({dashboard:'Dashboard',students:'Students',attendance:'Mark Attendance',reports:'Reports',alerts:'Alerts'})[page];if(page==='students')renderStudents();if(page==='attendance')renderSession();if(page==='alerts')renderAlerts()}
-$('nav').onclick=e=>{const b=e.target.closest('[data-page]');if(b)go(b.dataset.page)};document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>go(b.dataset.goto));
-function fillClasses(){for(const id of ['studentClass','studentFilter','attClass']){const el=$(id);el.innerHTML=(id==='studentFilter'?'<option value="">All classes</option>':'')+classes.map(c=>`<option value="${c}">${c}</option>`).join('')} $('studentClass').value='Nursery';$('attClass').value='Nursery'}
-function renderAll(){fillClasses();renderDashboard();renderStudents();renderSession();renderAlerts()}
-function renderDashboard(){const s=students(),rs=records().filter(r=>r.date===today());$('totalStudents').textContent=s.length;$('presentToday').textContent=rs.filter(r=>r.status==='Present').length;$('absentToday').textContent=rs.filter(r=>r.status==='Absent').length;$('rateToday').textContent=rs.length?Math.round(rs.filter(r=>r.status==='Present').length/rs.length*100)+'%':'—';const recent=records().slice().sort((a,b)=>(b.timestamp||'').localeCompare(a.timestamp||'')).slice(0,5);$('recent').innerHTML=recent.length?recent.map(r=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)">${escapeHTML(r.name)} <span class="muted small">${escapeHTML(r.className)} ${escapeHTML(r.section)}</span> — <span class="pill">${r.status}</span></div>`).join(''):'No attendance records yet.'}
-function renderStudents(){const q=($('studentSearch').value||'').toLowerCase(),cf=$('studentFilter').value,sf=$('sectionFilter').value;const arr=students().filter(s=>(!q||s.name.toLowerCase().includes(q)||s.admissionNumber.toLowerCase().includes(q))&&(!cf||s.className===cf)&&(!sf||s.section===sf)).sort((a,b)=>rank(a.className)-rank(b.className)||a.section.localeCompare(b.section)||a.name.localeCompare(b.name));$('studentsTable').innerHTML=arr.length?arr.map(s=>`<tr><td>${escapeHTML(s.name)}</td><td>${escapeHTML(s.admissionNumber)}</td><td>${escapeHTML(s.className)} ${escapeHTML(s.section)}</td><td><span class="pill ${s.descriptor?'green':''}">${s.descriptor?'Face enrolled':'Photo saved'}</span></td><td><button class="danger" data-delete="${s.id}">Delete</button></td></tr>`).join(''):'<tr><td colspan="5" class="empty">No students yet. Click Add Student.</td></tr>'}
-$('showStudentForm').onclick=()=>$('studentForm').classList.toggle('hidden');$('cancelStudent').onclick=()=>{$('studentForm').reset();$('studentForm').classList.add('hidden');$('photoPreview').classList.add('hidden')};
-$('studentSearch').oninput=renderStudents;$('studentFilter').onchange=renderStudents;$('sectionFilter').onchange=renderStudents;
-$('studentPhoto').onchange=()=>{const f=$('studentPhoto').files[0];if(f){$('photoPreview').src=URL.createObjectURL(f);$('photoPreview').classList.remove('hidden')}};
-function imageData(file,max=640){return new Promise((resolve,reject)=>{const r=new FileReader();r.onerror=reject;r.onload=()=>{const im=new Image();im.onerror=reject;im.onload=()=>{const scale=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);c.getContext('2d').drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.82))};im.src=r.result};r.readAsDataURL(file)})}
-async function loadModels(){if(modelsReady)return true;if(!window.faceapi){$('modelStatus').textContent='Face AI library did not load. Check your internet connection and reload.';return false}try{$('modelStatus').textContent='Loading AI models…';const u='https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights';await Promise.all([faceapi.nets.tinyFaceDetector.loadFromUri(u),faceapi.nets.faceLandmark68Net.loadFromUri(u),faceapi.nets.faceRecognitionNet.loadFromUri(u)]);modelsReady=true;$('modelStatus').textContent='AI models loaded.';return true}catch(e){console.error(e);$('modelStatus').textContent='Could not load AI models. Check internet and try again.';return false}}
-async function descriptorFromPhoto(photo){if(!await loadModels())return null;const img=await faceapi.fetchImage(photo);const d=await faceapi.detectSingleFace(img,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.35})).withFaceLandmarks().withFaceDescriptor();return d?Array.from(d.descriptor):null}
-$('studentForm').onsubmit=async e=>{e.preventDefault();const name=$('studentName').value.trim(),admissionNumber=$('admissionNo').value.trim(),file=$('studentPhoto').files[0];if(!file){$('studentMsg').textContent='Please select a student photo.';return}if(students().some(s=>s.admissionNumber.toLowerCase()===admissionNumber.toLowerCase())){$('studentMsg').textContent='Admission number must be unique.';return}try{$('studentMsg').textContent='Saving photo and preparing face data…';const photo=await imageData(file);let descriptor=null;try{descriptor=await descriptorFromPhoto(photo)}catch(err){console.warn(err)}const s={id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),name,admissionNumber,className:$('studentClass').value,section:$('studentSection').value,stream:$('studentStream').value,phone:$('parentPhone').value.trim(),photo,descriptor};const all=students();all.push(s);save(K.students,all);$('studentForm').reset();$('studentForm').classList.add('hidden');$('photoPreview').classList.add('hidden');$('studentMsg').textContent='';renderAll();alert(descriptor?'Student saved and face enrolled.':'Student saved, but face data was not created. Check the photo and internet connection.')}catch(err){console.error(err);$('studentMsg').textContent='Unable to save photo. Try a smaller JPG or PNG image.'}};
-$('studentsTable').onclick=e=>{const b=e.target.closest('[data-delete]');if(!b)return;if(!confirm('Delete this student and their attendance records?'))return;save(K.students,students().filter(s=>s.id!==b.dataset.delete));save(K.records,records().filter(r=>r.studentId!==b.dataset.delete));renderAll()};
-$('attDate').value=today();$('reportDate').value=today();
-function selectedStudents(){return students().filter(s=>s.className===$('attClass').value&&s.section===$('attSection').value)}
-function record(s,status){const date=$('attDate').value||today(),all=records(),i=all.findIndex(r=>r.studentId===s.id&&r.date===date);const r={studentId:s.id,name:s.name,admissionNumber:s.admissionNumber,className:s.className,section:s.section,status,date,timestamp:new Date().toISOString()};if(i>=0)all[i]=r;else all.push(r);save(K.records,all)}
-function renderSession(){if(!$('attDate').value)$('attDate').value=today();const ss=selectedStudents(),rr=records().filter(r=>r.date===$('attDate').value&&r.className===$('attClass').value&&r.section===$('attSection').value),map=new Map(rr.map(r=>[r.studentId,r.status]));$('sessionSummary').textContent=`${ss.length} students · ${rr.filter(r=>r.status==='Present').length} present · ${rr.filter(r=>r.status==='Absent').length} absent`;$('sessionTable').innerHTML=ss.length?ss.map(s=>`<tr><td>${escapeHTML(s.name)}<div class="muted small">${escapeHTML(s.admissionNumber)}</div></td><td><select data-status="${s.id}"><option value="Unmarked" ${!map.has(s.id)?'selected':''}>Unmarked</option><option ${map.get(s.id)==='Present'?'selected':''}>Present</option><option ${map.get(s.id)==='Absent'?'selected':''}>Absent</option></select></td></tr>`).join(''):'<tr><td colspan="2" class="empty">No students in this class and section.</td></tr>'}
-$('sessionTable').onchange=e=>{const sel=e.target.closest('[data-status]');if(!sel||sel.value==='Unmarked')return;const s=students().find(x=>x.id===sel.dataset.status);if(s){record(s,sel.value);recognized.add(s.id);renderSession();renderDashboard()}};
-$('attClass').onchange=()=>{recognized.clear();renderSession()};$('attSection').onchange=()=>{recognized.clear();renderSession()};$('attDate').onchange=renderSession;
-async function startCamera(){if(stream)return;const list=selectedStudents();if(!list.length){$('attMsg').textContent='No students in this class and section. Add students first.';return}if(!navigator.mediaDevices?.getUserMedia){$('attMsg').textContent='Camera is unavailable in this browser. Open the HTTPS GitHub Pages website.';return}if(!await loadModels())return;descriptors=[];for(const s of list){let d=s.descriptor;if(!d&&s.photo){try{d=await descriptorFromPhoto(s.photo);if(d){s.descriptor=d;save(K.students,students().map(x=>x.id===s.id?s:x))}}catch(e){console.warn(e)}}if(d&&d.length===128)descriptors.push({id:s.id,name:s.name,admissionNumber:s.admissionNumber,descriptor:new Float32Array(d)})}if(!descriptors.length){$('attMsg').textContent='No usable face profiles. Re-register clear, front-facing student photos.';return}try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});$('video').srcObject=stream;$('video').classList.remove('hidden');$('cameraPlaceholder').classList.add('hidden');$('startCamera').disabled=true;$('stopCamera').disabled=false;recognized=new Set(records().filter(r=>r.date===$('attDate').value&&r.className===$('attClass').value&&r.section===$('attSection').value&&r.status==='Present').map(r=>r.studentId));$('attMsg').textContent=`Camera running. ${descriptors.length} face profiles loaded. Scan one student at a time.`;timer=setInterval(scanFrame,650)}catch(e){console.error(e);$('attMsg').textContent='Camera permission denied or camera is already in use.'}}
-async function scanFrame(){if(!stream||!modelsReady||$('video').readyState<2)return;try{const ds=await faceapi.detectAllFaces($('video'),new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.4})).withFaceLandmarks().withFaceDescriptors();drawBoxes(ds);for(const d of ds){let best=null,dist=Infinity;for(const ref of descriptors){if(recognized.has(ref.id))continue;const x=faceapi.euclideanDistance(d.descriptor,ref.descriptor);if(x<dist){dist=x;best=ref}}if(best&&dist<.48){const s=students().find(x=>x.id===best.id);if(s){record(s,'Present');recognized.add(s.id);$('attMsg').textContent=`Recognized ${s.name} (${s.admissionNumber}) — marked Present.`;renderSession();renderDashboard()}}} }catch(e){console.warn(e)}}
-function drawBoxes(ds){const v=$('video'),c=$('overlay');if(!v.videoWidth||!v.videoHeight)return;c.width=v.videoWidth;c.height=v.videoHeight;const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);for(const d of ds){const b=d.detection.box;let best=null,dist=Infinity;for(const r of descriptors){const n=faceapi.euclideanDistance(d.descriptor,r.descriptor);if(n<dist){dist=n;best=r}}const s=best&&dist<.48?students().find(z=>z.id===best.id):null,label=s?`${s.name} · ${s.admissionNumber}`:'Unknown Student';x.strokeStyle=s?'#42d392':'#ff6262';x.lineWidth=3;x.strokeRect(b.x,b.y,b.width,b.height);x.font='bold 15px Arial';const w=Math.min(c.width-b.x,x.measureText(label).width+16),y=Math.max(0,b.y-30);x.fillStyle=s?'#176b45':'#9b3030';x.fillRect(b.x,y,w,26);x.fillStyle='#fff';x.fillText(label,b.x+8,y+18,w-12)}}
-function stopCamera(){if(timer){clearInterval(timer);timer=null}if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$('video').srcObject=null;$('video').classList.add('hidden');$('cameraPlaceholder').classList.remove('hidden');$('overlay').getContext('2d').clearRect(0,0,$('overlay').width,$('overlay').height);$('startCamera').disabled=false;$('stopCamera').disabled=true}
-$('startCamera').onclick=startCamera;$('stopCamera').onclick=()=>{stopCamera();$('attMsg').textContent='Camera stopped. Marked attendance has been saved.'};
-$('finishSession').onclick=()=>{const ss=selectedStudents();if(!ss.length){$('attMsg').textContent='No students to finalize.';return}if(!confirm('Finish session? Students not marked Present will be marked Absent.'))return;stopCamera();for(const s of ss){const old=records().find(r=>r.studentId===s.id&&r.date===$('attDate').value);if(!old||old.status!=='Present')record(s,'Absent')}renderSession();renderDashboard();renderAlerts();$('attMsg').textContent='Session finalized. Remaining students marked Absent.'};
-function inPeriod(date,p,anchor){const d=new Date(date+'T12:00:00'),a=new Date(anchor+'T12:00:00');if(p==='daily')return date===anchor;if(p==='monthly')return d.getFullYear()===a.getFullYear()&&d.getMonth()===a.getMonth();const start=new Date(a);start.setDate(start.getDate()-(start.getDay()+6)%7);const end=new Date(start);end.setDate(end.getDate()+7);return d>=start&&d<end}
-function generateReport(){const p=$('reportPeriod').value,a=$('reportDate').value||today();lastReport=records().filter(r=>inPeriod(r.date,p,a)).sort((x,y)=>x.date.localeCompare(y.date)||rank(x.className)-rank(y.className)||x.section.localeCompare(y.section)||x.name.localeCompare(y.name));$('reportSummary').textContent=`${p} report · ${lastReport.length} records · ${lastReport.filter(r=>r.status==='Present').length} present · ${lastReport.filter(r=>r.status==='Absent').length} absent`;$('reportTable').innerHTML=lastReport.length?lastReport.map(r=>`<tr><td>${dateLabel(r.date)}</td><td>${escapeHTML(r.name)}</td><td>${escapeHTML(r.admissionNumber)}</td><td>${escapeHTML(r.className)} ${escapeHTML(r.section)}</td><td>${r.status}</td></tr>`).join(''):'<tr><td colspan="5" class="empty">No attendance records for this period.</td></tr>'}
-$('generateReport').onclick=generateReport;$('reportPeriod').onchange=generateReport;
-$('exportCsv').onclick=()=>{const rows=[['Date','Student Name','Admission Number','Class','Section','Status'],...lastReport.map(r=>[r.date,r.name,r.admissionNumber,r.className,r.section,r.status])];const csv=rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='Smart_Attend_AI_Report.csv';a.click();URL.revokeObjectURL(url)};
-function renderAlerts(){const out=[];for(const s of students()){const h=records().filter(r=>r.studentId===s.id);if(!h.length)continue;const pct=Math.round(h.filter(r=>r.status==='Present').length/h.length*100);if(pct<75)out.push({...s,pct})}out.sort((a,b)=>rank(a.className)-rank(b.className)||a.section.localeCompare(b.section)||a.name.localeCompare(b.name));$('alertsTable').innerHTML=out.length?out.map(s=>`<tr><td>${escapeHTML(s.className)} ${escapeHTML(s.section)}</td><td>${escapeHTML(s.name)}</td><td>${escapeHTML(s.admissionNumber)}</td><td><span class="pill">${s.pct}%</span><div class="bar"><span style="width:${s.pct}%"></span></div></td></tr>`).join(''):'<tr><td colspan="4" class="empty">No low-attendance alerts yet.</td></tr>'}
-function restore(){const s=read(K.session,null);if(s&&s.email&&accounts().some(a=>a.email===s.email)){user=s;openApp()}else{localStorage.removeItem(K.session);showAuth('login')}}
-fillClasses();restore();
+const get=(k,d=[])=>{try{return JSON.parse(localStorage.getItem("sai_"+k))??d}catch{return d}};
+const put=(k,v)=>localStorage.setItem("sai_"+k,JSON.stringify(v));
+let users=get("users"),students=get("students"),records=get("records"),session=null;
+let user=null,attClass="Nursery",attSection="A",attStream="Science",studentClass="Nursery",studentSection="A",studentStream="Science";
+let dailyDate=new Date().toLocaleDateString("en-CA"),dailyClass="Nursery",dailySection="A",dailyStream="Science";
+let monthlyMonth=new Date().getMonth(),monthlyClass="Nursery",monthlySection="A",monthlyStream="Science";
+let alertClass="All",alertSection="All",alertStream="All";
+let faceModelsReady=false,scanActive=false,scanLoop=null,seenFace=false,faceCanvas=null;
+
+function todayISO(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function niceDate(d=todayISO()){return new Date(d+"T12:00:00").toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})}
+$("today").textContent=niceDate();
+function showLogin(){$("loginForm").classList.remove("hidden");$("signupForm").classList.add("hidden")}
+function showSignup(){$("loginForm").classList.add("hidden");$("signupForm").classList.remove("hidden")}
+function modal(html){$("modalContent").innerHTML=html;$("modal").classList.remove("hidden")}
+function closeModal(){$("modal").classList.add("hidden")}
+$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeModal()});
+
+$("signup").onsubmit=e=>{
+ e.preventDefault();let f=new FormData(e.target),name=f.get("name").trim(),email=f.get("email").trim().toLowerCase(),password=f.get("password"),role=f.get("role");
+ if(f.get("schoolCode")!==SCHOOL_CODE)return alert("Incorrect school password.");
+ if(users.some(u=>u.email===email))return alert("An account with this email already exists.");
+ users.push({name,email,password,role});put("users",users);alert("Account created! You can now log in.");e.target.reset();showLogin();
+};
+$("login").onsubmit=e=>{
+ e.preventDefault();let f=new FormData(e.target),email=f.get("email").trim().toLowerCase();
+ let found=users.find(u=>u.email===email&&u.password===f.get("password"));
+ if(!found)return alert("Incorrect email or password. Please create an account if you are new.");
+ user=found;localStorage.setItem("sai_session",email);launchApp();
+};
+function launchApp(){
+ $("auth").classList.add("hidden");$("app").classList.remove("hidden");
+ $("greeting").textContent="Hey, "+(user.role==="Teacher"?"Teachers":user.name)+"!";
+ renderAll();navigate("dashboard");
+}
+function logout(){user=null;localStorage.removeItem("sai_session");$("app").classList.add("hidden");$("auth").classList.remove("hidden");showLogin()}
+function navigate(page){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ $(page).classList.add("active");
+ document.querySelectorAll(".nav [data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+}
+document.querySelectorAll(".nav [data-page]").forEach(b=>b.onclick=()=>navigate(b.dataset.page));
+function toggleReports(){["dailyNav","monthlyNav"].forEach(id=>$(id).classList.toggle("hidden"))}
+function streamNeeded(c){return c==="11"||c==="12"}
+function classOptions(selected){return CLASSES.map(c=>`<option ${c===selected?"selected":""}>${c}</option>`).join("")}
+function sectionOptions(selected){return SECTIONS.map(c=>`<option ${c===selected?"selected":""}>${c}</option>`).join("")}
+function streamOptions(selected){return STREAMS.map(c=>`<option ${c===selected?"selected":""}>${c}</option>`).join("")}
+function filterHTML(prefix,c,s,st,showDate=false,showMonth=false,alertMode=false){
+ return `<div><label>Class</label><select id="${prefix}Class">${alertMode?'<option>All</option>':""}${classOptions(c)}</select></div>
+ <div id="${prefix}StreamWrap" ${!alertMode&&!streamNeeded(c)?"class='hidden'":""}><label>Stream</label><select id="${prefix}Stream">${alertMode?'<option>All</option>':""}${streamOptions(st)}</select></div>
+ <div><label>Section</label><select id="${prefix}Section">${alertMode?'<option>All</option>':""}${sectionOptions(s)}</select></div>
+ ${showDate?`<div><label>Date</label><input id="${prefix}Date" type="date" value="${dailyDate}"></div>`:""}
+ ${showMonth?`<div><label>Month</label><select id="${prefix}Month">${MONTHS.map((m,i)=>`<option value="${i}" ${i===monthlyMonth?"selected":""}>${m}</option>`).join("")}</select></div>`:""}
+ <button class="primary" onclick="runFilter('${prefix}')">Go</button>`;
+}
+function setFilters(){
+ $("attFilters").innerHTML=filterHTML("a",attClass,attSection,attStream);
+ $("studentFilters").innerHTML=filterHTML("s",studentClass,studentSection,studentStream);
+ $("dailyFilters").innerHTML=filterHTML("d",dailyClass,dailySection,dailyStream,true);
+ $("monthlyFilters").innerHTML=filterHTML("m",monthlyClass,monthlySection,monthlyStream,false,true);
+ $("alertFilters").innerHTML=filterHTML("l",alertClass,alertSection,alertStream,false,false,true);
+ ["a","s","d","m","l"].forEach(p=>{
+  $(p+"Class").onchange=()=>{
+   let c=$(p+"Class").value,w=$(p+"StreamWrap");
+   if(w)w.classList.toggle("hidden",!streamNeeded(c)&&p!=="l");
+  };
+ });
+}
+function runFilter(p){
+ let c=$(p+"Class").value,s=$(p+"Section").value,st=$(p+"Stream").value;
+ if(p==="a"){attClass=c;attSection=s;attStream=st;renderAttendance()}
+ if(p==="s"){studentClass=c;studentSection=s;studentStream=st;renderStudents()}
+ if(p==="d"){dailyClass=c;dailySection=s;dailyStream=st;dailyDate=$(p+"Date").value||todayISO();renderDaily()}
+ if(p==="m"){monthlyClass=c;monthlySection=s;monthlyStream=st;monthlyMonth=Number($(p+"Month").value);renderMonthly()}
+ if(p==="l"){alertClass=c;alertSection=s;alertStream=st;renderAlerts()}
+}
+function applicable(s,c,sec,st){return s.status!=="Left"&&s.status!=="Transferred"&&s.class===c&&s.section===sec&&(!streamNeeded(c)||s.stream===st)}
+function sorted(list){return [...list].sort((a,b)=>CLASSES.indexOf(a.class)-CLASSES.indexOf(b.class)||a.section.localeCompare(b.section)||a.name.localeCompare(b.name))}
+function getRecord(id,date){return records.find(r=>r.id===id&&r.date===date)}
+function pct(s,month=null){
+ let rows=records.filter(r=>r.id===s.id&&(month===null||Number(r.date.slice(5,7))===month+1));
+ let days=new Set(rows.map(r=>r.date)).size;
+ return days?Math.round(rows.filter(r=>r.status==="Present").length/days*100):0;
+}
+function table(headers,rows){
+ if(!rows.length)return '<div class="empty">No records found. Add students or mark attendance to see data here.</div>';
+ return `<div class="table-wrap"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(v=>`<td>${v??""}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+function statusPill(status){return `<span class="pill ${status==="Present"?"present":status==="Absent"?"absent":"neutral"}">${status}</span>`}
+function renderDashboard(){
+ let active=students.filter(s=>!["Left","Transferred"].includes(s.status));
+ let todays=records.filter(r=>r.date===todayISO());
+ let p=todays.filter(r=>r.status==="Present").length,a=todays.filter(r=>r.status==="Absent").length;
+ $("totalCount").textContent=active.length;$("presentCount").textContent=p;$("absentCount").textContent=a;
+ let percent=active.length?Math.round(p/active.length*100):0;
+ $("dashBars").innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:34px;color:var(--green)">${percent}%</strong><span class="small">Today's recorded attendance</span></div><div class="bar-bg" style="height:16px;margin:14px 0 24px"><div class="bar-fill" style="width:${percent}%"></div></div>`;
+ $("classSummary").innerHTML=CLASSES.map(c=>{
+ let list=active.filter(s=>s.class===c),ids=new Set(list.map(s=>s.id));
+ let present=todays.filter(r=>ids.has(r.id)&&r.status==="Present").length;
+ return `<div class="bar-row"><span>${c}</span><div class="bar-bg"><div class="bar-fill" style="width:${list.length?present/list.length*100:0}%"></div></div><span>${present}/${list.length}</span></div>`;
+ }).join("");
+ $("recent").innerHTML=table(["Date","Admission No.","Student","Class","Section","Status"],[...todays].reverse().slice(0,8).map(r=>{let s=students.find(s=>s.id===r.id);return [r.date,s?.admission||"",s?.name||"Deleted student",s?.class||"",s?.section||"",statusPill(r.status)]}));
+}
+function renderAttendance(){
+ let list=sorted(students.filter(s=>applicable(s,attClass,attSection,attStream)));
+ $("attCaption").textContent=`${attClass}${streamNeeded(attClass)?" · "+attStream:""} · Section ${attSection} · ${todayISO()}`;
+ $("attendanceTable").innerHTML=table(["Admission No.","Roll No.","Full Name","Class","Section","Status"],list.map(s=>{
+ let r=getRecord(s.id,todayISO());
+ return [s.admission,s.roll,s.name,s.class,s.section,`<select id="status_${s.id}"><option ${r?.status==="Present"?"selected":""}>Present</option><option ${r?.status==="Absent"?"selected":""}>Absent</option></select>`];
+ }));
+}
+function saveAttendance(){
+ let list=students.filter(s=>applicable(s,attClass,attSection,attStream)),date=todayISO();
+ list.forEach(s=>{
+ let status=$("status_"+s.id)?.value;if(!status)return;
+ let r=getRecord(s.id,date);
+ if(r)r.status=status;else records.push({id:s.id,date,status});
+ });
+ put("records",records);renderAll();alert("Attendance saved successfully.");
+}
+function renderStudents(){
+ let list=sorted(students.filter(s=>applicable(s,studentClass,studentSection,studentStream)));
+ $("studentTable").innerHTML=table(["Photo","Admission No.","Roll No.","Student Name","Class","Section","Father's Name","Father's Phone","Monthly %",""],list.map(s=>[
+ s.photo?`<img class="face-photo" src="${s.photo}">`:"—",s.admission,s.roll,s.name,s.class,s.section,s.father,s.phone,pct(s,new Date().getMonth())+"%",
+ `<button class="outline" onclick="deleteStudent('${s.id}')">⋮ Delete</button>`
+ ]));
+}
+function openStudent(){
+ modal(`<h2>Add Student</h2><form id="studentForm">
+ <label>Student photo (required for face matching)</label><input name="photo" type="file" accept="image/*" required>
+ <div class="form-grid">
+ <div><label>Full name</label><input name="name" required></div>
+ <div><label>Admission number</label><input name="admission" required></div>
+ <div><label>Roll number</label><input name="roll" required></div>
+ <div><label>Class</label><select name="class">${classOptions(studentClass)}</select></div>
+ <div id="newStreamWrap"><label>Stream</label><select name="stream">${streamOptions(studentStream)}</select></div>
+ <div><label>Section</label><select name="section">${sectionOptions(studentSection)}</select></div>
+ <div><label>Father's name</label><input name="father" required></div>
+ <div><label>Father's phone number</label><input name="phone" type="tel" required></div>
+ </div><p class="small" id="faceEnrollStatus">Face recognition descriptor will be generated when the model is available.</p>
+ <div class="modal-actions"><button type="button" class="outline" onclick="closeModal()">Cancel</button><button class="primary">Save Student</button></div></form>`);
+ let cf=$("studentForm").elements.class;
+ cf.onchange=()=> $("newStreamWrap").classList.toggle("hidden",!streamNeeded(cf.value));
+ $("newStreamWrap").classList.toggle("hidden",!streamNeeded(cf.value));
+ $("studentForm").onsubmit=async e=>{
+  e.preventDefault();let f=e.target,fd=new FormData(f),file=fd.get("photo");
+  if(students.some(s=>s.admission===fd.get("admission").trim()))return alert("Admission number must be unique.");
+  let photo=await compressPhoto(file);
+  let descriptor=null;
+  if(faceModelsReady){
+   try{let img=await faceapi.fetchImage(photo),det=await faceapi.detectSingleFace(img,new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();if(det)descriptor=Array.from(det.descriptor)}catch{}
+  }
+  students.push({id:crypto.randomUUID(),name:fd.get("name").trim(),admission:fd.get("admission").trim(),roll:fd.get("roll").trim(),class:fd.get("class"),stream:fd.get("stream"),section:fd.get("section"),father:fd.get("father").trim(),phone:fd.get("phone").trim(),photo,descriptor,status:"Active"});
+  put("students",students);closeModal();renderAll();alert(descriptor?"Student saved with face descriptor.":"Student saved. Face matching requires the face model and a detectable face in the photo.");
+ };
+}
+function compressPhoto(file){return new Promise((resolve,reject)=>{let r=new FileReader();r.onload=()=>{let im=new Image();im.onload=()=>{let c=document.createElement("canvas"),scale=Math.min(1,500/Math.max(im.width,im.height));c.width=im.width*scale;c.height=im.height*scale;c.getContext("2d").drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL("image/jpeg",.72))};im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+function deleteStudent(id){
+ let s=students.find(s=>s.id===id);if(!s)return;
+ modal(`<h2>Delete student record?</h2><p>Are you sure you want to delete <strong>${escapeHTML(s.name)}</strong> and their attendance records?</p><label>Enter school password</label><input id="deletePass" type="password"><div class="modal-actions"><button class="outline" onclick="closeModal()">Cancel</button><button class="danger" onclick="confirmDelete('${id}')">Delete</button></div>`);
+}
+function confirmDelete(id){
+ if($("deletePass").value!==SCHOOL_CODE)return alert("Incorrect school password.");
+ students=students.filter(s=>s.id!==id);records=records.filter(r=>r.id!==id);put("students",students);put("records",records);closeModal();renderAll();
+}
+function escapeHTML(x){return String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function renderDaily(){
+ let list=sorted(students.filter(s=>applicable(s,dailyClass,dailySection,dailyStream)));
+ $("dailyTable").innerHTML=table(["Admission No.","Roll No.","Full Name","Class","Section","Status"],list.map(s=>{let r=getRecord(s.id,dailyDate);return [s.admission,s.roll,s.name,s.class,s.section,statusPill(r?.status||"Not marked")]}));
+}
+function renderMonthly(){
+ let list=sorted(students.filter(s=>applicable(s,monthlyClass,monthlySection,monthlyStream)));
+ let monthRows=records.filter(r=>Number(r.date.slice(5,7))===monthlyMonth+1);
+ $("monthlyTable").innerHTML=`<p class="small">${MONTHS[monthlyMonth]} attendance · Percentage is calculated from dates with recorded attendance.</p>`+table(["Admission No.","Roll No.","Full Name","Class","Section","Present Days","Absent Days","Attendance %"],list.map(s=>{
+ let rows=monthRows.filter(r=>r.id===s.id),present=rows.filter(r=>r.status==="Present").length,absent=rows.filter(r=>r.status==="Absent").length;
+ let pc=rows.length?Math.round(present/rows.length*100):0;
+ return [s.admission,s.roll,s.name,s.class,s.section,present,absent,pc+"%"];
+ }));
+}
+function renderAlerts(){
+ let list=sorted(students.filter(s=>!["Left","Transferred"].includes(s.status)&&
+ (alertClass==="All"||s.class===alertClass)&&(alertSection==="All"||s.section===alertSection)&&
+ (!streamNeeded(s.class)||alertStream==="All"||s.stream===alertStream)));
+ list=list.filter(s=>records.some(r=>r.id===s.id)&&pct(s)<75);
+ $("alertTable").innerHTML=table(["Admission No.","Roll No.","Student Name","Class","Stream","Section","Attendance %"],list.map(s=>[s.admission,s.roll,s.name,s.class,streamNeeded(s.class)?s.stream:"—",s.section,`<span class="pill absent">${pct(s)}%</span>`]));
+}
+function renderAll(){setFilters();renderDashboard();renderAttendance();renderStudents();renderDaily();renderMonthly();renderAlerts()}
+function exportCSV(page){
+ let headers=[],rows=[],filename=page+"-attendance.csv";
+ if(page==="daily"){headers=["Admission Number","Roll Number","Name","Class","Section","Status"];rows=students.filter(s=>applicable(s,dailyClass,dailySection,dailyStream)).map(s=>[s.admission,s.roll,s.name,s.class,s.section,getRecord(s.id,dailyDate)?.status||"Not marked"])}
+ else {headers=["Admission Number","Roll Number","Name","Class","Section","Present Days","Absent Days","Attendance Percentage"];rows=students.filter(s=>applicable(s,monthlyClass,monthlySection,monthlyStream)).map(s=>{let rs=records.filter(r=>r.id===s.id&&Number(r.date.slice(5,7))===monthlyMonth+1),p=rs.filter(r=>r.status==="Present").length,a=rs.filter(r=>r.status==="Absent").length;return [s.admission,s.roll,s.name,s.class,s.section,p,a,rs.length?Math.round(p/rs.length*100)+"%":"0%"]});filename=MONTHS[monthlyMonth].toLowerCase()+"-attendance.csv"}
+ let csv=[headers,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ let blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
+}
+async function openCamera(){
+ if(!navigator.mediaDevices?.getUserMedia)return alert("Camera access requires HTTPS or localhost and a supported browser.");
+ if(!students.length)return alert("Please add student records and photos before scanning.");
+ modal(`<h2>AI Face Attendance</h2><p class="small">Green = recognized. Red = unknown. One student is marked at a time.</p>
+ <div id="cameraBox"><video id="video" autoplay muted playsinline></video><canvas id="overlay"></canvas></div>
+ <div class="camera-status" id="cameraStatus">Loading face recognition models…</div>
+ <div class="modal-actions"><button class="outline" onclick="stopCamera()">Stop Camera</button></div>
+ <p class="footer-note">Recognition requires a compatible face model and a clear, registered student photo. Confirm attendance before finalizing.</p>`);
+ try{
+  const video=$("video");
+  window.cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});
+  video.srcObject=window.cameraStream;await video.play();
+  try{
+   if(!faceModelsReady){
+    const base="https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights";
+    await Promise.all([
+     faceapi.nets.tinyFaceDetector.loadFromUri(base),
+     faceapi.nets.faceLandmark68Net.loadFromUri(base),
+     faceapi.nets.faceRecognitionNet.loadFromUri(base)
+    ]);faceModelsReady=true;
+   }
+   $("cameraStatus").textContent="Camera ready. Looking for a face…";scanActive=true;seenFace=false;scanLoop=setInterval(scanFaces,900);
+  }catch(err){$("cameraStatus").textContent="Face model could not load. Check your internet connection and try again."}
+ }catch(err){$("cameraStatus").textContent="Camera unavailable. Check browser camera permissions."}
+}
+async function scanFaces(){
+ if(!scanActive)return;
+ let video=$("video"),canvas=$("overlay");if(!video||video.readyState<2||!faceModelsReady)return;
+ const w=video.videoWidth,h=video.videoHeight;if(!w||!h)return;
+ canvas.width=w;canvas.height=h;
+ let ctx=canvas.getContext("2d");ctx.clearRect(0,0,w,h);
+ let detections=await faceapi.detectAllFaces(video,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.55})).withFaceLandmarks().withFaceDescriptors();
+ if(!detections.length){seenFace=false;$("cameraStatus").textContent="No face detected. Please stand in front of the camera.";return}
+ for(let det of detections){
+  let match=null,best=1;
+  students.filter(s=>s.status==="Active"&&s.descriptor?.length===128).forEach(s=>{
+   let dist=faceapi.euclideanDistance(det.descriptor,new Float32Array(s.descriptor));
+   if(dist<best){best=dist;match=s}
+  });
+  if(best>.50)match=null;
+  let b=det.detection.box,x=b.x,y=b.y;
+  ctx.strokeStyle=match?"#24dc77":"#ff4848";ctx.lineWidth=4;ctx.strokeRect(x,y,b.width,b.height);
+  let text=match?`${match.name} · ${match.admission}`:"Unknown";
+  ctx.font="bold 17px Segoe UI";let tw=ctx.measureText(text).width+18,tx=Math.min(x+b.width-tw,w-tw),ty=Math.max(26,y);
+  ctx.fillStyle=match?"#16844a":"#c02c36";ctx.fillRect(Math.max(0,tx),ty-25,tw,25);
+  ctx.fillStyle="white";ctx.fillText(text,Math.max(5,tx+9),ty-8);
+  if(match&&!seenFace){
+   seenFace=true;let rec=getRecord(match.id,todayISO());
+   if(rec){$("cameraStatus").textContent=`${match.name} already marked ${rec.status}. Ask the student to leave the camera view.`}
+   else{
+    records.push({id:match.id,date:todayISO(),status:"Present"});put("records",records);renderAll();
+    $("cameraStatus").textContent=`✓ ${match.name} (${match.admission}) marked Present. Wait for the student to leave the frame.`;
+   }
+  }else if(!match){$("cameraStatus").textContent="Unknown face detected. No attendance marked."}
+ }
+ if(!detections.some(d=>{let best=Infinity;students.filter(s=>s.descriptor?.length===128).forEach(s=>best=Math.min(best,faceapi.euclideanDistance(d.descriptor,new Float32Array(s.descriptor))));return best<=.50}))seenFace=false;
+}
+function stopCamera(){scanActive=false;clearInterval(scanLoop);if(window.cameraStream)window.cameraStream.getTracks().forEach(t=>t.stop());window.cameraStream=null;closeModal();renderAll()}
+window.addEventListener("beforeunload",()=>{if(window.cameraStream)window.cameraStream.getTracks().forEach(t=>t.stop())});
+(function init(){
+ const email=localStorage.getItem("sai_session");if(email){let found=users.find(u=>u.email===email);if(found){user=found;launchApp()}}
 })();
 </script>
 </body>
