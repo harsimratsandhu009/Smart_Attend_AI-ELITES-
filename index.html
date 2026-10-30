@@ -48,7 +48,7 @@ padding:27px;box-shadow:var(--shadow)}
 border:1px solid white;border-radius:19px;padding:22px 13px;box-shadow:0 8px 24px #5835281c;
 display:flex;flex-direction:column;align-self:stretch}
 .side-brand{text-align:center;padding:3px 5px 20px;border-bottom:1px solid var(--line);margin-bottom:16px}
-.side-brand strong{font: bold 20px Georgia;color:var(--deep);display:block}
+.side-brand strong{font:bold 20px Georgia;color:var(--deep);display:block}
 .side-brand span{font:19px Georgia;color:var(--terracotta);display:block;margin-top:7px}
 .nav{display:flex;flex-direction:column;gap:6px}
 .nav button{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 13px;
@@ -252,7 +252,7 @@ let user=null,attClass="Nursery",attSection="A",attStream="Science",studentClass
 let dailyDate=new Date().toLocaleDateString("en-CA"),dailyClass="Nursery",dailySection="A",dailyStream="Science";
 let monthlyMonth=new Date().getMonth(),monthlyClass="Nursery",monthlySection="A",monthlyStream="Science";
 let alertClass="All",alertSection="All",alertStream="All";
-let faceModelsReady=false,scanActive=false,scanLoop=null,seenFace=false,faceCanvas=null;
+let faceModelsReady=false,scanActive=false,scanLoop=null,scanBusy=false,faceCanvas=null;
 
 function todayISO(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function niceDate(d=todayISO()){return new Date(d+"T12:00:00").toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"})}
@@ -353,13 +353,19 @@ function renderAttendance(){
  $("attCaption").textContent=`${attClass}${streamNeeded(attClass)?" · "+attStream:""} · Section ${attSection} · ${todayISO()}`;
  $("attendanceTable").innerHTML=table(["Admission No.","Roll No.","Full Name","Class","Section","Status"],list.map(s=>{
  let r=getRecord(s.id,todayISO());
- return [s.admission,s.roll,s.name,s.class,s.section,`<select id="status_${s.id}"><option ${r?.status==="Present"?"selected":""}>Present</option><option ${r?.status==="Absent"?"selected":""}>Absent</option></select>`];
+ return [s.admission,s.roll,s.name,s.class,s.section,
+ `<select id="status_${s.id}">
+ <option value="" ${!r?"selected":""}>Not Marked</option>
+ <option value="Present" ${r?.status==="Present"?"selected":""}>Present</option>
+ <option value="Absent" ${r?.status==="Absent"?"selected":""}>Absent</option>
+ </select>`];
  }));
 }
 function saveAttendance(){
  let list=students.filter(s=>applicable(s,attClass,attSection,attStream)),date=todayISO();
  list.forEach(s=>{
- let status=$("status_"+s.id)?.value;if(!status)return;
+ let status=$("status_"+s.id)?.value;
+ if(!status)return;
  let r=getRecord(s.id,date);
  if(r)r.status=status;else records.push({id:s.id,date,status});
  });
@@ -439,67 +445,317 @@ function exportCSV(page){
  let csv=[headers,...rows].map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
  let blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);
 }
+
+/* ---------------- FACE RECOGNITION CAMERA ---------------- */
+
 async function openCamera(){
  if(!navigator.mediaDevices?.getUserMedia)return alert("Camera access requires HTTPS or localhost and a supported browser.");
  if(!students.length)return alert("Please add student records and photos before scanning.");
- modal(`<h2>AI Face Attendance</h2><p class="small">Green = recognized. Red = unknown. One student is marked at a time.</p>
- <div id="cameraBox"><video id="video" autoplay muted playsinline></video><canvas id="overlay"></canvas></div>
+
+ modal(`<h2>AI Face Attendance</h2>
+ <p class="small">Green = recognized. Red = unknown. Multiple students can be recognized at the same time.</p>
+ <div id="cameraBox">
+  <video id="video" autoplay muted playsinline></video>
+  <canvas id="overlay"></canvas>
+ </div>
  <div class="camera-status" id="cameraStatus">Loading face recognition models…</div>
- <div class="modal-actions"><button class="outline" onclick="stopCamera()">Stop Camera</button></div>
- <p class="footer-note">Recognition requires a compatible face model and a clear, registered student photo. Confirm attendance before finalizing.</p>`);
+ <div class="modal-actions">
+  <button class="outline" onclick="stopCamera()">Stop Camera</button>
+ </div>
+ <p class="footer-note">Green boxes show recognized students. Already-marked students will not receive duplicate attendance entries. Unknown faces are never marked Present.</p>`);
+
  try{
   const video=$("video");
-  window.cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});
-  video.srcObject=window.cameraStream;await video.play();
+  window.cameraStream=await navigator.mediaDevices.getUserMedia({
+   video:{facingMode:"user"},audio:false
+  });
+
+  video.srcObject=window.cameraStream;
+  await video.play();
+
   try{
    if(!faceModelsReady){
     const base="https://cdn.jsdelivr.net/gh/justadudewhohacks/face-api.js@master/weights";
+
     await Promise.all([
      faceapi.nets.tinyFaceDetector.loadFromUri(base),
      faceapi.nets.faceLandmark68Net.loadFromUri(base),
      faceapi.nets.faceRecognitionNet.loadFromUri(base)
-    ]);faceModelsReady=true;
+    ]);
+
+    faceModelsReady=true;
    }
-   $("cameraStatus").textContent="Camera ready. Looking for a face…";scanActive=true;seenFace=false;scanLoop=setInterval(scanFaces,900);
-  }catch(err){$("cameraStatus").textContent="Face model could not load. Check your internet connection and try again."}
- }catch(err){$("cameraStatus").textContent="Camera unavailable. Check browser camera permissions."}
-}
-async function scanFaces(){
- if(!scanActive)return;
- let video=$("video"),canvas=$("overlay");if(!video||video.readyState<2||!faceModelsReady)return;
- const w=video.videoWidth,h=video.videoHeight;if(!w||!h)return;
- canvas.width=w;canvas.height=h;
- let ctx=canvas.getContext("2d");ctx.clearRect(0,0,w,h);
- let detections=await faceapi.detectAllFaces(video,new faceapi.TinyFaceDetectorOptions({inputSize:320,scoreThreshold:.55})).withFaceLandmarks().withFaceDescriptors();
- if(!detections.length){seenFace=false;$("cameraStatus").textContent="No face detected. Please stand in front of the camera.";return}
- for(let det of detections){
-  let match=null,best=1;
-  students.filter(s=>s.status==="Active"&&s.descriptor?.length===128).forEach(s=>{
-   let dist=faceapi.euclideanDistance(det.descriptor,new Float32Array(s.descriptor));
-   if(dist<best){best=dist;match=s}
-  });
-  if(best>.50)match=null;
-  let b=det.detection.box,x=b.x,y=b.y;
-  ctx.strokeStyle=match?"#24dc77":"#ff4848";ctx.lineWidth=4;ctx.strokeRect(x,y,b.width,b.height);
-  let text=match?`${match.name} · ${match.admission}`:"Unknown";
-  ctx.font="bold 17px Segoe UI";let tw=ctx.measureText(text).width+18,tx=Math.min(x+b.width-tw,w-tw),ty=Math.max(26,y);
-  ctx.fillStyle=match?"#16844a":"#c02c36";ctx.fillRect(Math.max(0,tx),ty-25,tw,25);
-  ctx.fillStyle="white";ctx.fillText(text,Math.max(5,tx+9),ty-8);
-  if(match&&!seenFace){
-   seenFace=true;let rec=getRecord(match.id,todayISO());
-   if(rec){$("cameraStatus").textContent=`${match.name} already marked ${rec.status}. Ask the student to leave the camera view.`}
-   else{
-    records.push({id:match.id,date:todayISO(),status:"Present"});put("records",records);renderAll();
-    $("cameraStatus").textContent=`✓ ${match.name} (${match.admission}) marked Present. Wait for the student to leave the frame.`;
-   }
-  }else if(!match){$("cameraStatus").textContent="Unknown face detected. No attendance marked."}
+
+   $("cameraStatus").textContent="Camera ready. Looking for students…";
+   scanActive=true;
+   scanBusy=false;
+
+   if(scanLoop)clearInterval(scanLoop);
+   scanLoop=setInterval(scanFaces,700);
+
+  }catch(err){
+   $("cameraStatus").textContent="Face model could not load. Check your internet connection and try again.";
+  }
+
+ }catch(err){
+  $("cameraStatus").textContent="Camera unavailable. Check browser camera permissions.";
  }
- if(!detections.some(d=>{let best=Infinity;students.filter(s=>s.descriptor?.length===128).forEach(s=>best=Math.min(best,faceapi.euclideanDistance(d.descriptor,new Float32Array(s.descriptor))));return best<=.50}))seenFace=false;
 }
-function stopCamera(){scanActive=false;clearInterval(scanLoop);if(window.cameraStream)window.cameraStream.getTracks().forEach(t=>t.stop());window.cameraStream=null;closeModal();renderAll()}
-window.addEventListener("beforeunload",()=>{if(window.cameraStream)window.cameraStream.getTracks().forEach(t=>t.stop())});
+
+async function scanFaces(){
+ if(!scanActive||scanBusy)return;
+
+ let video=$("video"),canvas=$("overlay");
+ if(!video||!canvas||video.readyState<2||!faceModelsReady)return;
+
+ const w=video.videoWidth,h=video.videoHeight;
+ if(!w||!h)return;
+
+ scanBusy=true;
+
+ try{
+  canvas.width=w;
+  canvas.height=h;
+
+  let ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,w,h);
+
+  const detections=await faceapi
+   .detectAllFaces(video,new faceapi.TinyFaceDetectorOptions({
+    inputSize:416,
+    scoreThreshold:.5
+   }))
+   .withFaceLandmarks()
+   .withFaceDescriptors();
+
+  if(!scanActive)return;
+
+  if(!detections.length){
+   $("cameraStatus").textContent="No face detected. Please stand in front of the camera.";
+   return;
+  }
+
+  let newlyMarked=[];
+  let alreadyMarked=[];
+  let unknownCount=0;
+
+  /*
+   Each detected face is matched independently.
+   A Set prevents two face boxes in one frame from
+   being assigned to the same registered student.
+  */
+
+  let matchedStudents=new Set();
+
+  for(const det of detections){
+
+   let match=null;
+   let best=Infinity;
+
+   const registered=students.filter(s=>
+    s.status==="Active"&&
+    s.descriptor&&
+    s.descriptor.length===128
+   );
+
+   for(const student of registered){
+
+    const distance=faceapi.euclideanDistance(
+     det.descriptor,
+     new Float32Array(student.descriptor)
+    );
+
+    if(distance<best){
+     best=distance;
+     match=student;
+    }
+   }
+
+   if(best>.50)match=null;
+
+   if(match&&matchedStudents.has(match.id)){
+    match=null;
+   }
+
+   if(match)matchedStudents.add(match.id);
+
+   const box=det.detection.box;
+   const x=box.x,y=box.y;
+   const faceWidth=box.width;
+
+   let label,statusText,boxColor,labelColor;
+
+   if(!match){
+
+    label="Unknown";
+    statusText="Not Recognized";
+    boxColor="#ff4848";
+    labelColor="#c02c36";
+    unknownCount++;
+
+   }else{
+
+    const existing=getRecord(match.id,todayISO());
+
+    if(existing&&existing.status==="Present"){
+
+     /*
+      The student is already Present.
+      Show the existing status without creating
+      another attendance record.
+     */
+
+     label=match.name;
+     statusText="Already Marked Present";
+     boxColor="#24dc77";
+     labelColor="#16844a";
+
+     alreadyMarked.push(match.name);
+
+    }else{
+
+     /*
+      New recognized student:
+      Create one Present record only.
+      If a previous manual Absent record exists,
+      update that record instead of adding a duplicate.
+     */
+
+     let rec=getRecord(match.id,todayISO());
+
+     if(rec){
+      rec.status="Present";
+     }else{
+      records.push({
+       id:match.id,
+       date:todayISO(),
+       status:"Present"
+      });
+     }
+
+     label=match.name;
+     statusText="MARKED PRESENT";
+     boxColor="#24dc77";
+     labelColor="#16844a";
+
+     newlyMarked.push(match.name);
+    }
+   }
+
+   /*
+    Draw an individual face box and its two labels.
+   */
+
+   ctx.strokeStyle=boxColor;
+   ctx.lineWidth=4;
+   ctx.strokeRect(x,y,faceWidth,box.height);
+
+   ctx.font="bold 16px Segoe UI";
+
+   const nameWidth=ctx.measureText(label).width+18;
+   const labelX=Math.max(0,Math.min(x,w-nameWidth));
+
+   const nameY=Math.max(26,y);
+
+   ctx.fillStyle=labelColor;
+   ctx.fillRect(labelX,nameY-26,nameWidth,26);
+
+   ctx.fillStyle="#ffffff";
+   ctx.fillText(label,labelX+9,nameY-8);
+
+   ctx.font="bold 12px Segoe UI";
+
+   const statusWidth=ctx.measureText(statusText).width+16;
+   const statusX=Math.max(0,Math.min(x,w-statusWidth));
+   const statusY=Math.min(h-5,nameY+box.height+22);
+
+   ctx.fillStyle=labelColor;
+   ctx.fillRect(statusX,statusY-19,statusWidth,21);
+
+   ctx.fillStyle="#ffffff";
+   ctx.fillText(statusText,statusX+8,statusY-4);
+  }
+
+  /*
+   Save and refresh the dashboard only once per frame,
+   even when several students are recognized together.
+  */
+
+  if(newlyMarked.length){
+   put("records",records);
+   renderAll();
+  }
+
+  /*
+   Camera status reports all students detected in the frame.
+  */
+
+  let messages=[];
+
+  if(newlyMarked.length){
+   messages.push("✓ Marked Present: "+newlyMarked.join(", "));
+  }
+
+  if(alreadyMarked.length){
+   messages.push("Already Marked Present: "+alreadyMarked.join(", "));
+  }
+
+  if(unknownCount){
+   messages.push(unknownCount+" unknown face(s) — no attendance marked.");
+  }
+
+  if(messages.length){
+   $("cameraStatus").innerHTML=messages
+    .map(m=>`<div style="margin:4px 0">${escapeHTML(m)}</div>`)
+    .join("");
+  }
+
+ }catch(err){
+  console.error("Face recognition error:",err);
+  if($("cameraStatus")){
+   $("cameraStatus").textContent="Recognition error. Please keep the camera running and try again.";
+  }
+ }finally{
+  scanBusy=false;
+ }
+}
+
+function stopCamera(){
+ scanActive=false;
+
+ if(scanLoop){
+  clearInterval(scanLoop);
+  scanLoop=null;
+ }
+
+ scanBusy=false;
+
+ if(window.cameraStream){
+  window.cameraStream.getTracks().forEach(t=>t.stop());
+ }
+
+ window.cameraStream=null;
+
+ closeModal();
+ renderAll();
+}
+
+window.addEventListener("beforeunload",()=>{
+ if(window.cameraStream){
+  window.cameraStream.getTracks().forEach(t=>t.stop());
+ }
+});
+
 (function init(){
- const email=localStorage.getItem("sai_session");if(email){let found=users.find(u=>u.email===email);if(found){user=found;launchApp()}}
+ const email=localStorage.getItem("sai_session");
+
+ if(email){
+  let found=users.find(u=>u.email===email);
+  if(found){
+   user=found;
+   launchApp();
+  }
+ }
 })();
 </script>
 </body>
